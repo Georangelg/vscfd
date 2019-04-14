@@ -10,6 +10,7 @@ function logged_in() {
 function confirm_logged_in() {
 	if (!logged_in()) {
 		header( "Location: index.php" ); die;
+		
 	}
 }
 ?>

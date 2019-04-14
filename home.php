@@ -1,9 +1,12 @@
 <?php
 require("config/session.php");
-require("config/helper.php");
-require("config/database.php");
+require("config/helper.db2.php");
+//require("config/database_mysql.php");
 require("config/constant.php");
 confirm_logged_in();
+
+$help = new helper();
+
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +14,7 @@ confirm_logged_in();
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Welcome to <?=PROJECT_MODULE?></title>
+  <title><?=PROJECT_MODULE?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -45,9 +48,9 @@ confirm_logged_in();
     <!-- Logo -->
     <a href="home.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>DM</span>
+      <span class="logo-mini"><b>C</b>GV</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Welcome</b> <?=PROJECT_MODULE?></span>
+      <span class="logo-lg"><!-- <b>Welcome</b> --> <?=PROJECT_MODULE?></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -62,7 +65,7 @@ confirm_logged_in();
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs"><?php echo $_SESSION['FIRST_NAME']." ".$_SESSION['LAST_NAME']?></span>
+              <span class="hidden-xs"><?php echo $_SESSION['FIRST_NAME']?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -70,8 +73,8 @@ confirm_logged_in();
                 <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  <?php echo $_SESSION['FIRST_NAME']." ".$_SESSION['LAST_NAME']?> - Web Developer
-                  <small>Since 2011</small>
+                  <?php echo $_SESSION['FIRST_NAME']?> - some title
+                  <small><?php echo "hi"; ?></small>
                 </p>
               </li>
               <!-- Menu Footer-->
@@ -99,7 +102,7 @@ confirm_logged_in();
         <li class="header">MAIN NAVIGATION</li>
         <li class="active treeview">
           <a href="?action=dashboard">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            <i class="fa fa-dashboard"></i> <span>Dashboards</span>
           </a>
         </li>
         <li>
@@ -124,12 +127,14 @@ confirm_logged_in();
     <?php
       $action = @$_GET['action'];
       switch($action){
-          case "":
+          case "": 
           case "dashboard":
               include("module/dashboard/dashboard.php");
               break;
           default:
-              echo "Invalid Action"; 
+              //echo "Invalid Action"; //Pagina no encontrada 404 o algo asi
+              include("module/error/404.php");
+              break;
       }
     ?>
   </div>

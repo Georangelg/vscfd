@@ -25,16 +25,16 @@ function display_error($class_name,$message) {
  * | Fetch single data
  * |-------------------------------------------------------
  */
-function fetch_single($table,$field,$key,$value) {
-  	$sql = "SELECT $field FROM $table WHERE $key = '$value' LIMIT 1";
-	$result = $GLOBALS['conn']->query($sql);
-	if ($result->num_rows > 0) {
-    	$data = $result->fetch_assoc();
-    	return $data;
-	}else{
-		return FALSE;
-	}	
-}
+	function fetch_single($table,$field,$key,$value) {
+		$sql = "SELECT $field FROM $table WHERE $key = '$value' LIMIT 1";
+		$result = $GLOBALS['conni']->query($sql);
+		if ($result->num_rows > 0) {
+			$data = $result->fetch_assoc();
+			return $data;
+		}else{
+			return FALSE;
+		}	
+	}
 
 /*
  * |-------------------------------------------------------
@@ -58,7 +58,7 @@ function fetch_multiple($table,$field,$key,$value) {
  * |-------------------------------------------------------
  */
 function fetch_custom($sql) {
-	$result = $GLOBALS['conn']->query($sql);
+	$result = $GLOBALS['conni']->query($sql);
 	if ($result->num_rows > 0) {
     	$data = mysqli_fetch_all($result,MYSQLI_ASSOC);
     	return $data;
@@ -119,26 +119,26 @@ function check_brute($user_id) {
     }
 }
 
-/*
- * |-------------------------------------------------------
- * | Validate user login
- * |-------------------------------------------------------
- */
-function validate_user($email,$password){
-	//encript password to md5
-	$password = md5($password);
-	$sql = "SELECT * FROM user WHERE email='$email' AND password='$password' LIMIT 1";
-	$data = fetch_custom($sql);
-	if($data){
-		//fill the result to session variable
-		$_SESSION['MEMBER_ID'] = $data[0]['id'];
-		$_SESSION['FIRST_NAME'] = $data[0]['first_name'];
-		$_SESSION['LAST_NAME'] = $data[0]['last_name'];
-		return TRUE;
-	}else{
-		return FALSE;
+	/*
+	* |-------------------------------------------------------
+	* | Validate user login
+	* |-------------------------------------------------------
+	*/
+	function validate_user($email,$password){
+		//encript password to md5
+		$password = md5($password);
+		$sql = "SELECT * FROM user WHERE email='$email' AND password='$password' LIMIT 1";
+		$data = fetch_custom($sql);
+		if($data){
+			//fill the result to session variable
+			$_SESSION['MEMBER_ID'] = $data[0]['id'];
+			$_SESSION['FIRST_NAME'] = $data[0]['first_name'];
+			$_SESSION['LAST_NAME'] = $data[0]['last_name'];
+			return TRUE;
+		}else{
+			return FALSE;
+		}
 	}
-}
 
 /*
  * |-------------------------------------------------------

@@ -1,12 +1,14 @@
 <?php
 require("config/session.php");
 require("config/constant.php");
-require("config/helper.php");
+require("config/helper.db2.php");
 
 //redirect to template page if the user is logged in
-if(logged_in()){
+if(logged_in()){ //Session.php
     header( "Location: home.php" ); die;
 }
+
+$help=new helper();
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,9 +42,9 @@ if(logged_in()){
         <?php
         $error_code = @$_GET['error']; 
         if($error_code==ERROR_CODE_LOGIN){
-            display_error('alert-danger',ERROR_MSG_LOGIN);      
+            $msg = $help->display_error('alert-danger',ERROR_MSG_LOGIN);//helper.db2.php      
         }elseif ($error_code==ERROR_CODE_BLOCKED) {
-            display_error('alert-danger',ERROR_MSG_BLOCKED);
+            $msg = $help->display_error('alert-danger',ERROR_MSG_BLOCKED);//helper.db2.php      
         } 
         ?>
         <!-- end display error message -->
@@ -74,6 +76,30 @@ if(logged_in()){
         <a href="#">Olvide la contraseña</a><br>
     </div>
     <!-- /.login-box-body -->
+    
+    <div>
+        <?php
+        //echo "Hola desde php";
+
+        
+        
+
+        //$animal = $help->selectAnimalByID(1);
+        //$list = $help->selectAnimal();
+        //$emp_id = $help->get_user_id('admin@admin.com');
+        //$animalini = $help->selectAnimalporID(4);
+        //$damelo = $help->get_user_id('admin@admin.com');
+        $myuserdata = $help->validate_user('admin@admin.com','21232f297a57a5a743894a0e4a801fc3');
+        //$password = 'admin';
+        //$password_salt = md5($password);
+        //echo $password_salt;
+        //$sesion = $help->debugg_session('admin@admin.com');
+        //var_dump($sesion);
+        ?>
+
+
+
+    </div>
 </div>
 <!-- /.login-box -->
 

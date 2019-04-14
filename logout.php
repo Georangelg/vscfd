@@ -1,7 +1,10 @@
 <?php
 session_start();
-require("config/helper.php");
+require("config/helper.db2.php");
 
-logout_user();
+$help=new helper();
+
+
+$help->logout_user();
 header( "Location: index.php" ); die;
 ?>
