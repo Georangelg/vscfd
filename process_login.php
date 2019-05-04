@@ -28,7 +28,7 @@ if($_SERVER['REQUEST_METHOD']==='POST' && is_array($_POST) && !empty($email) && 
                 'time' => time()
                 );
             //insert login attempts into table
-            //insert('login_attempts',$data);
+           $insert = $CFDIBD->insert_attempt($data);
         }
 		header( "Location: index.php?error=bG9naW4gZXJyb3I=" ); die;
 	}

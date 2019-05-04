@@ -133,92 +133,20 @@ class helper extends db2
     }
     public function lista_full()
     {
-        $this->data = array();
-        $this->query = "SELECT ID, NOMBRE, USUARIO, PASSWORD FROM  ZPEREZV.SYS_USUARIOS";
-        $this->stmt = parent::prepara($this->query); //print_r($this->stmt);
-        $this->res = db2_execute($this->stmt, array(10)); //print_r($this->res);
-        $this->c_data = array();
-        while ($this->as = parent::recupera_asociativo($this->stmt)) {
-            $this->id = $this->as['ID'];
-            $this->nombre = $this->as['NOMBRE'];
-            $this->usuario = $this->as['USUARIO'];
-            $this->password = $this->as['PASSWORD'];
-            $this->c_data[$this->id] = array($this->id, $this->nombre, $this->usuario, $this->password); //echo $this->id;
-        }
-        $this->res = json_encode($this->c_data);
-        return $this->res; //var_dump($this->c_data);
-    }
-
-    public function del_user($id)
-    {
-        $qry = "delete from ZPEREZV.sys_usuarios where id = '" . $id . "'";
-        $stmt = parent::prepara($qry); //print_r($stmt);
-        $exec = parent::ejecuta($stmt);
-        if ($exec) {
-            echo "BORRADO";
-        } else {
-            echo "NO BORRADO";
-        }
-    }
-
-    public function list_ajax()
-    {
-        $this->data = array();
-        $this->query = "SELECT ID, NOMBRE, USUARIO, PASSWORD FROM  ZPEREZV.SYS_USUARIOS";
-        $this->stmt = parent::prepara($this->query); //print_r($this->stmt);
-        $this->res = db2_execute($this->stmt, array(10)); //print_r($this->res);
-        $this->c_data = array();
-        while ($this->as = parent::recupera_asociativo($this->stmt)) {
-            $this->id           = $this->as['ID'];
-            $this->nombre       = $this->as['NOMBRE'];
-            $this->usuario      = $this->as['USUARIO'];
-            $this->password     = $this->as['PASSWORD'];
-            $this->update       = '<button type="button" name="update" id="'.$this->as['ID'].'" class="btn btn-warning btn-xs update">Update</button>';
-            $this->delete       = '<button type="button" name="delete" id="'.$this->as['ID'].'" class="btn btn-danger btn-xs delete">Delete</button>';
-            $this->c_data[]     = array($this->id, $this->nombre, $this->usuario, $this->password, $this->update, $this->delete); //echo $this->id;
-        }
-        $saida = array(
-            "data" => $this->c_data,
-        );
-        echo json_encode($saida);
-    }
-    public function del_ajax($id){
-        $this->query = "DELETE FROM  ZPEREZV.SYS_USUARIOS where ID = '".$id."'";
-        $this->stmt = parent::prepara($this->query); //print_r($this->stmt);
-        $this->res = db2_execute($this->stmt, array(10)); //print_r($this->res);
-        if($this->res){
-            echo "Listo!";
-        }else{
-            echo "sigue ahi";
-        }
-    }
-    
-    public function update($id, $nombre, $mail){
-        //$dta = array($id, $nombre, $mail);var_dump($dta);
-        $this->query = ("UPDATE ZPEREZV.SYS_USUARIOS SET nombre = '".$nombre."', usuario = '".$mail."' WHERE id = '".$id."'");
-        $this->stmt = parent::prepara($this->query); //print_r($this->stmt);
-        $this->res = db2_execute($this->stmt, array(10)); //print_r($this->res);
-		if(!empty($this->res))
-		{   
-            //return 1;
-            echo "Listo";
-		}else{
-            echo "Algo salio mal";
-        }
-    }
-    public function create($nombre, $mail, $pass){
-            $passm = md5($pass);
-            $this->query = "INSERT INTO ZPEREZV.SYS_USUARIOS (NOMBRE, USUARIO, PASSWORD) VALUES ('$nombre', '$mail', '$passm')";
-            $this->stmt = parent::prepara($this->query); //print_r($this->stmt);
-            $this->res = db2_execute($this->stmt); //print_r($this->res);
-            if(!empty($this->res))
-            {   
-                //return 1;
-                echo "Usuario ".$nombre." agregado";
-            }else{
-                echo "Algo salio mal";
+        $query = "SELECT ID, NOMBRE, USUARIO, PASSWORD FROM  ZPEREZV.SYS_USUARIOS";
+        $stmt = parent::prepara($query); //print_r($stmt);
+        $exec = parent::ejecuta($stmt); //print_r($exec);
+        print "<b>SQL results:</b>\n";
+        print "<table border=\"1\">\n";
+        while ($line = parent::recupera_matriz($stmt)) {
+            print "<tr>";
+            foreach ($line as $col_value) {
+                print "<td>" . $col_value . "</td>";
             }
-
+        }
+        print "</table>\n";
+        print "</body></html>";
     }
+
 
 }

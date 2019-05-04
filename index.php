@@ -76,39 +76,12 @@ $help=new helper();
         <a href="#">Olvide la contraseña</a><br>
     </div>
     <!-- /.login-box-body -->
-    
-    <div>
-        <?php
-        //echo "Hola desde php";
-
-        
-        
-
-        //$animal = $help->selectAnimalByID(1);
-        //$list = $help->selectAnimal();
-        //$emp_id = $help->get_user_id('admin@admin.com');
-        //$animalini = $help->selectAnimalporID(4);
-        //$damelo = $help->get_user_id('admin@admin.com');
-        $myuserdata = $help->validate_user('admin@admin.com','21232f297a57a5a743894a0e4a801fc3');
-        //$password = 'admin';
-        //$password_salt = md5($password);
-        //echo $password_salt;
-        //$sesion = $help->debugg_session('admin@admin.com');
-        //var_dump($sesion);
-        ?>
-
-
-
-    </div>
 </div>
 <!-- /.login-box -->
 
-<!-- jQuery 2.2.3 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="plugins/iCheck/icheck.min.js"></script>
+<!-- jQuery 2.2.3 --><script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 --><script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck --><script src="plugins/iCheck/icheck.min.js"></script>
 <script>
 $(function () {
     $('input').iCheck({

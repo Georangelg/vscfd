@@ -69,6 +69,21 @@
       </div>
     </div>
 
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-red">
+        <div class="inner">
+          <h3>Usuarios</h3>
+          
+     <!-- <p>Unique Visitors</p> -->
+        </div>
+        <div class="icon">
+          <!-- <i class="ion ion-pie-graph"></i> -->
+          
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
     
 <!-- ./col -->
   </div>
@@ -76,15 +91,13 @@
   <!-- /.row -->
   <?php
     //$lista_usuarios = $help->get_user_lilst_one();/*$nombre = $lista_usuarios[0];$id = $lista_usuarios[1];$mail = $lista_usuarios[2];*///$cookie = $help->validate_cookie();//$user = $lista_usuarios[0];//var_dump($user);//$qty = count($lista_usuarios);//$del = $help->del_user();
-    //$lista_usuarios = $help->lista_full();
+    $lista_usuarios = $help->lista_full();
     //var_dump($lista_usuarios);
-    //$someArray = json_decode($lista_usuarios, true);
+    $someArray = json_decode($lista_usuarios, true);
     //print_r($someArray);
-    //$dl = $help->del_ajax();
-    
     
       ?>
-<!-- <table>
+<table>
   <thead>
     <tr  class="table-active">
       <th scope="col" class="col-xs-3" >NOMBRE</th>
@@ -113,6 +126,6 @@
     </tr>
   </tbody>
   <?php } ?> 
-  </table> --> 
+  </table> 
 </section>
 <!-- /.content -->
