@@ -15,11 +15,11 @@
 			.box
 			{
 				width:1270px;
-				padding:20px;
+				padding:10px;
 				background-color:#fff;
 				border:1px solid #ccc;
 				border-radius:5px;
-				margin-top:25px;
+				margin-top:15px;
 			}
 		</style>
 </head>
@@ -39,7 +39,8 @@
 							<th width="10%">ID</th>
 							<th width="20%">USUARIO</th>
                             <th width="20%">MAIL</th>
-                            <th width="20%">PASS</th>
+							<th width="20%">PASS</th>
+							<th width="20%">TIPO</th>
 							<th width="10%">Editar</th>
 							<th width="10%">Delete</th> 
 						</tr>
@@ -69,11 +70,14 @@
 					<label>Password</label>
 					<input type="password" name="pass" id="pass" class="form-control" />
 					<br />
+					<label>Tipo</label>
+					<input type="text" name="tipo" id="tipo" class="form-control" />
+					<br />
 				</div>
 				<div class="modal-footer">
 					<input type="hidden" name="id" id="id" />
 					<input type="hidden" name="operacao" id="operacao" />
-					<input type="submit" name="action" id="action" mailclass="btn btn-success" value="Add" />
+					<input type="submit" name="action" id="action" class="btn btn-success" value="Add" />
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>

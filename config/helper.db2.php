@@ -48,42 +48,52 @@ class helper extends db2
     }
     public function insert_attempt($data)
     {
-        $fields = array_keys($data);
-        $sql = "INSERT INTO SYS_ATTEMPTS (`" . implode('`,`', $fields) . "`) VALUES('" . implode("','", $data) . "')";
-        $stmt = parent::prepara($sql);
-        $result = parent::ejecuta($stmt);
-        while ($row = db2_fetch_assoc($stmt)) {
-            //printf("%-5d %-16s %-32s %10s<br><br>",
-            //$row['ID'], $row['NAME'], $row['BREED'], $row['WEIGHT']);
+        $this->id = $data['user_id'];
+        $this->time = $data['time'];
+        $this->sql = "INSERT INTO ZPEREZV.SYS_ATTEMPTS (USER_ID, TIME) VALUES ('$this->id', '$this->time')";
+        $this->stmt = parent::prepara($this->sql);//var_dump($this->stmt);
+        $this->result = db2_execute($this->stmt);
+        if(!empty($this->result))
+        {   
+            //return 1;
+            echo "agregado";
+        }else{
+            echo "Algo salio mal ";
         }
-        return $row;
     }
+
     public function get_user_id($mail)
     {
-        $query = "select ID from zperezv.sys_usuarios where USUARIO = '" . $mail . "'";
-        $stmt = parent::prepara($query);
-        $result = parent::ejecuta($stmt);
-        while ($row = parent::recupera_asociativo($stmt)) {
-            printf("%-32d", $row['ID']);
+        $this->query = "select ID from zperezv.sys_usuarios where USUARIO = '" . $mail . "'";
+        $this->stmt = parent::prepara($this->query);
+        $this->result = parent::ejecuta($this->stmt);
+        while ($this->as = parent::recupera_asociativo($this->stmt)) {
+            $this->id           = $this->as['ID'];
         }
-        return $row;
+        return $this->id;
     }
     public function check_brute($user_id)
-    {
-        // Get timestamp of current time
+    {   
         $now = time();
-        // All login attempts are counted from the past 10 min.
         $valid_attempts = $now - (30 * 60);
-
-        $sql = "SELECT time FROM login_attempts WHERE user_id = $user_id AND time > '$valid_attempts'";
-        $data = fetch_custom($sql);
-        // If there have been more than 5 failed logins
-        if (count($data) > 5) {
+        $sql = "SELECT time FROM ZPEREZV.SYS_ATTEMPTS WHERE user_id = '".$user_id."' AND time > '".$valid_attempts."'"; 
+        $stmt = parent::prepara($sql);
+        $res = parent::ejecuta($stmt);
+        $i = 0;
+        while ($row = db2_fetch_assoc($stmt)) {
+            //printf("%-5d %-16s %-32s<br><br>",$this->row['ID'], $this->row['NOMBRE'], $this->row['USUARIO']);
+            $nombre = $row["TIME"];//echo $nombre;
+            $i++;
+        }
+        if ($i > 5) {
             return true;
         } else {
             return false;
         }
+        
     }
+
+    
     public function fetch_custom($sql)
     {
         $stmt = parent::prepara($sql);
@@ -164,7 +174,7 @@ class helper extends db2
     public function list_ajax()
     {
         $this->data = array();
-        $this->query = "SELECT ID, NOMBRE, USUARIO, PASSWORD FROM  ZPEREZV.SYS_USUARIOS";
+        $this->query = "SELECT ID, NOMBRE, USUARIO, PASSWORD, TIPO FROM  ZPEREZV.SYS_USUARIOS";
         $this->stmt = parent::prepara($this->query); //print_r($this->stmt);
         $this->res = db2_execute($this->stmt, array(10)); //print_r($this->res);
         $this->c_data = array();
@@ -173,9 +183,10 @@ class helper extends db2
             $this->nombre       = $this->as['NOMBRE'];
             $this->usuario      = $this->as['USUARIO'];
             $this->password     = $this->as['PASSWORD'];
+            $this->tipo         = $this->as['TIPO'];
             $this->update       = '<button type="button" name="update" id="'.$this->as['ID'].'" class="btn btn-warning btn-xs update">Update</button>';
             $this->delete       = '<button type="button" name="delete" id="'.$this->as['ID'].'" class="btn btn-danger btn-xs delete">Delete</button>';
-            $this->c_data[]     = array($this->id, $this->nombre, $this->usuario, $this->password, $this->update, $this->delete); //echo $this->id;
+            $this->c_data[]     = array($this->id, $this->nombre, $this->usuario, $this->password, $this->tipo, $this->update, $this->delete); //echo $this->id;
         }
         $saida = array(
             "data" => $this->c_data,
@@ -193,9 +204,9 @@ class helper extends db2
         }
     }
     
-    public function update($id, $nombre, $mail){
+    public function update($id, $nombre, $mail, $tipo){
         //$dta = array($id, $nombre, $mail);var_dump($dta);
-        $this->query = ("UPDATE ZPEREZV.SYS_USUARIOS SET nombre = '".$nombre."', usuario = '".$mail."' WHERE id = '".$id."'");
+        $this->query = ("UPDATE ZPEREZV.SYS_USUARIOS SET nombre = '".$nombre."', usuario = '".$mail."', tipo = '".$tipo."' WHERE id = '".$id."'");
         $this->stmt = parent::prepara($this->query); //print_r($this->stmt);
         $this->res = db2_execute($this->stmt, array(10)); //print_r($this->res);
 		if(!empty($this->res))
@@ -206,9 +217,9 @@ class helper extends db2
             echo "Algo salio mal";
         }
     }
-    public function create($nombre, $mail, $pass){
+    public function create($nombre, $mail, $pass, $tipo){
             $passm = md5($pass);
-            $this->query = "INSERT INTO ZPEREZV.SYS_USUARIOS (NOMBRE, USUARIO, PASSWORD) VALUES ('$nombre', '$mail', '$passm')";
+            $this->query = "INSERT INTO ZPEREZV.SYS_USUARIOS (NOMBRE, USUARIO, PASSWORD, TIPO) VALUES ('$nombre', '$mail', '$passm', '$tipo')";
             $this->stmt = parent::prepara($this->query); //print_r($this->stmt);
             $this->res = db2_execute($this->stmt); //print_r($this->res);
             if(!empty($this->res))

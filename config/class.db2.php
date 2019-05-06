@@ -42,6 +42,11 @@ class db2
         return db2_fetch_row($stmt);
     }
     public function cuenta_row($stmt){
-    return db2_num_rows($stmt);
+        if(!$stmt){
+            return db2_num_rows($stmt);
+        }else{
+            return false;
+        }
+        
     }
 }

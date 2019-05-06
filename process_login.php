@@ -13,22 +13,24 @@ if($_SERVER['REQUEST_METHOD']==='POST' && is_array($_POST) && !empty($email) && 
     $user_id = $CFDIBD->get_user_id($email); //helper.db2.php
     //if user id exist check for brute
     if($user_id){
-        if(check_brute($user_id['ID'])){
+        //echo $user_id;
+        $check = $CFDIBD->check_brute($user_id);
+         if($check){
             header( "Location: index.php?error=bG9naW4gYmxvY2tlZA==" ); die;    
-        }
+        } 
     }
     //check user is valid or not
     $status = $CFDIBD->validate_user($email,$password);
 	if($status){
-		header( "Location: home.php" ); die;		
+        header( "Location: home.php" ); die;		
 	}else{
-        if($user_id){
+        if($user_id){//echo "aqui";
             $data = array(
-                'user_id' => $user_id['ID'],
+                'user_id' => $user_id,
                 'time' => time()
-                );
+                );//var_dump($data);
             //insert login attempts into table
-           $insert = $CFDIBD->insert_attempt($data);
+           $insert = $CFDIBD->insert_attempt($data);//var_dump($insert);
         }
 		header( "Location: index.php?error=bG9naW4gZXJyb3I=" ); die;
 	}

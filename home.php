@@ -106,6 +106,11 @@ confirm_logged_in();
             <i class="fa fa-list"></i> <span>Table</span>
           </a>
         </li>
+        <li class="treeview">
+          <a href="?action=validate">
+          <i class="fa fa-tasks"></i> <span>Validacion</span>
+          </a>
+        </li>
         <li>
           <a href="#">
             <i class="fa fa-circle"></i> <span>Menu 1</span>
@@ -135,8 +140,11 @@ switch ($action) {
     case "datatable":
         include "module/table/table.php";
         break;
+    case "validate":
+        include "module/validate/valida.php";
+        break;
     default:
-        //echo "Invalid Action"; //Pagina no encontrada 404 o algo asi
+        //echo "Invalid Action";//Pagina no encontrada 404 o algo asi
         include "module/error/404.php";
         break;
 }
@@ -162,13 +170,37 @@ $data = new helper();
   //$.widget.bridge('uibutton', $.ui.button);
   var table;
   $(document).ready(function() {
-            $('#add_button').click(function(){
+    
+    var url = document.location.toString().substring(58,42); //alert(url);
+    
+// Will only work if string in href matches with location
+$('ul.sidebar-menu li li.treeview a[href="'+url+'"]').parent().addClass('active');
+
+                    $('#add_button').click(function(){
 	                              $('#user_form')[0].reset();
 	                              $('.modal-title').text("Adicionar Usuário");
+                                $('#pass').prop( "disabled", false );
 	                              $('#action').val("Add");
 	                              $('#operacao').val("Add");
 	                              $('#user_uploaded_image').html('');
 	});
+
+  $('#val_button').click(function(){
+	              //alert("Hola"); 
+                var remisor = $('#remisor').val();//alert("El emisor es: "+remisor);              
+                var rreceptor = $('#rreceptor').val();//alert("El receptor es: "+rreceptor);              
+                var valor = $('#valor').val();
+                var uuid = $('#uuid').val();
+                $.ajax({
+			                  url:"valida.php",
+			                  method:"POST",
+			                  data:{remisor:remisor, rreceptor:rreceptor, valor:valor, uuid:uuid},
+                        success:function(data){
+                          alert(data);
+                        }
+
+	});
+});
     //alert("listo");
     table = $('#user_data').DataTable({
 
@@ -244,26 +276,30 @@ $(document).on('click', '.delete', function(id){
 
 	$(document).on('click', '.update', function(id){
 		var id = $(this).attr("id");
-    var nombre = $(this).parent("td").prev("td").prev("td").prev("td").text();//alert(nombre);
-    var mail = $(this).parent("td").prev("td").prev("td").text();//alert(mail);
-    
+    var nombre = $(this).parent("td").prev("td").prev("td").prev("td").prev("td").text();//alert(nombre);
+    var mail = $(this).parent("td").prev("td").prev("td").prev("td").text();//alert(mail);
+    //var pass = $(this).parent("td").prev("td").prev("td").text();//alert(pass);
+    var tipo = $(this).parent("td").prev("td").text();//alert(tipo);
     $.ajax({
 			url:"upadd.php",
 			method:"POST",
-			data:{id:id, nombre:nombre, mail:mail, pass:pass},
-			success:function(data)
+			data:{id:id, nombre:nombre, mail:mail, tipo:tipo},
+      success:function(data)
 			{
+    
+        
         //alert(nombre);
         $('#userModal').modal('show');
 				$('#usuario').val(nombre);
 				$('#mail').val(mail);
+        $('#tipo').val(tipo);
+        $('#pass').prop( "disabled", true );
 				$('.modal-title').text("Edit User");
 				$('#id').val(id);
 				$('#action').val("Edit");
 				$('#operacao').val("Edit");
-
+        
 			}
-
 		})
 	});
   });

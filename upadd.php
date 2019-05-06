@@ -7,11 +7,13 @@ $help =  new helper();
             $id = $_POST["id"]; // lo parseamos para recibirlo con php
             $nombre = $_POST["usuario"];
             $mail = $_POST["mail"];
-            $pass = $_POST["pass"];
+          
+            $tipo = $_POST["tipo"];
             if($operacion == "Edit"){
-                $upadd = $help->update($id, $nombre, $mail); // y al final invocamos la funcion php con el parametro.
+                $upadd = $help->update($id, $nombre, $mail, $tipo); // y al final invocamos la funcion php con el parametro.
             }else if($operacion == "Add"){
-                $upadd = $help->create($nombre, $mail, $pass); // y al final invocamos la funcion php con el parametro.
+                $pass = $_POST["pass"];
+                $upadd = $help->create($nombre, $mail, $pass, $tipo); // y al final invocamos la funcion php con el parametro.
             }else{
                 return 0;
             }
